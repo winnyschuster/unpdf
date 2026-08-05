@@ -9,7 +9,7 @@ export const isNode = globalThis.process?.release?.name === 'node'
 export const isBrowser = typeof window !== 'undefined'
 
 /**
- * Returns a PDFDocumentProxy instance from a given binary data.
+ * Returns a `PDFDocumentProxy` instance from a given binary data.
  *
  * Applies the following defaults:
  * - `useSystemFonts: true`
@@ -37,7 +37,8 @@ export async function getDocumentProxy(
       }
     }
     catch {
-      // pdfjs-dist not installed (e.g. using serverless bundle), skip font defaults
+      // `pdfjs-dist` is not installed (e.g. when using the serverless
+      // bundle), so skip the font defaults.
     }
   }
 
@@ -103,7 +104,7 @@ export async function resolvePDFJSImport(
   }
 
   try {
-    // @ts-expect-error: Type mismatch
+    // @ts-expect-error: Type mismatch.
     resolvedModule = await import('unpdf/pdfjs')
   }
   catch (error) {

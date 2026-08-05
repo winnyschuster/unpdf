@@ -24,7 +24,7 @@ export async function getMeta(
     if (options.parseDates) {
       const { PDFDateString } = await getResolvedPDFJS()
 
-      // Primary date properties from /Info dictionary
+      // Primary date properties from the `/Info` dictionary.
       if (info?.CreationDate) {
         info.CreationDate = PDFDateString.toDateObject(info?.CreationDate)
       }
@@ -32,7 +32,7 @@ export async function getMeta(
         info.ModDate = PDFDateString.toDateObject(info?.ModDate)
       }
 
-      // Override metadata getter to parse XMP date properties
+      // Override the metadata getter so XMP date properties are parsed on access.
       if (meta.metadata) {
         meta.metadata = new Proxy(meta.metadata, {
           get(target, prop) {

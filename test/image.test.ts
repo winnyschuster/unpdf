@@ -19,7 +19,7 @@ describe('image', () => {
       new Uint8Array(result),
     )
 
-    // Verify the buffer contains PNG header signature (first 8 bytes of a PNG file)
+    // Verify the buffer contains the PNG header signature.
     const headerBytes = new Uint8Array(result, 0, 8)
     expect(Array.from(headerBytes)).toEqual([137, 80, 78, 71, 13, 10, 26, 10])
   })
@@ -52,7 +52,7 @@ describe('image', () => {
   it('renders a page with a soft mask from a pre-built document proxy', async () => {
     // Intermediate canvases (soft masks, transparency groups) are requested from
     // the document-level canvas factory, which for a proxy created without the
-    // `CanvasFactory` option is the built-in PDF.js one — it must resolve
+    // `CanvasFactory` option is the built-in PDF.js one – it must resolve
     // `@napi-rs/canvas` once `canvasImport` has been provided.
     // See https://github.com/unjs/unpdf/issues/53
     const pdf = await getDocumentProxy(await getPDF('transparency.pdf'))

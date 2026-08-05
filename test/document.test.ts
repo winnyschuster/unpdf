@@ -30,7 +30,7 @@ describe('document lifecycle', () => {
     expect(text[0]).toBe('Dummy PDF file')
     expect(destroySpy).not.toHaveBeenCalled()
 
-    // The proxy must still be usable after a helper returns
+    // The proxy must still be usable after a helper returns.
     const { info } = await getMeta(pdf)
     expect(info.Creator).toBe('Writer')
     expect(destroySpy).not.toHaveBeenCalled()

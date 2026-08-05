@@ -5,7 +5,7 @@ import { getPDF } from './utils'
 
 describe('pdfjs resolution', () => {
   it('can resolve a custom PDF.js version', async () => {
-    // @ts-ignore: Dynamic import from package build
+    // @ts-ignore: Dynamic import from package build.
     await definePDFJSModule(() => import('../dist/pdfjs'))
     const { text } = await extractText(await getPDF())
 

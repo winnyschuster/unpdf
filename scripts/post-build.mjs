@@ -35,7 +35,7 @@ async function relativeTypePaths(filename) {
     path.resolve(rootDir, 'dist/types'),
   )
 
-  // Replace `pdfjs-dist/types` import path with relative path and add `.js` extension
+  // Replace `pdfjs-dist/types` import path with relative path and add `.js` extension.
   const base = relativePath.startsWith('.') ? relativePath : `./${relativePath}`
   content = content.replace(/pdfjs-dist\/types(\/[^'";\s]+?)(?:\.js)?(?=['"])/g, `${base}$1.js`)
   content = content.replace(/pdfjs-dist\/types/g, base)

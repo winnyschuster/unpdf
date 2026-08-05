@@ -55,13 +55,12 @@ export async function extractImages(
       }
 
       const imageKey = operatorList.argsArray[i][0]
-      // Resolve global image keys
+      // PDF.js prefixes keys of images shared across pages with `g_`.
       const image = await new Promise<RequestedImageObject | null>(
         resolve => (imageKey.startsWith('g_') ? page.commonObjs : page.objs).get(imageKey, resolve),
       )
 
       if (!image || !image.data || !image.width || !image.height) {
-        // Missing required properties
         continue
       }
 
@@ -69,7 +68,6 @@ export async function extractImages(
       const calculatedChannels = data.length / (width * height)
 
       if (![1, 3, 4].includes(calculatedChannels)) {
-        // Unexpected channel count
         continue
       }
 
@@ -133,10 +131,8 @@ export async function renderPageAsImage(
 
     const page = await pdf.getPage(pageNumber)
 
-    // Create viewport of the page at default scale (1.0)
     const defaultViewport = page.getViewport({ scale: 1.0 })
 
-    // Calculate appropriate scale based on provided options
     let scale = options.scale || 1.0
 
     if (options.width) {
@@ -146,7 +142,6 @@ export async function renderPageAsImage(
       scale = options.height / defaultViewport.height
     }
 
-    // Create the correctly scaled viewport
     const viewport = page.getViewport({ scale: Math.max(0, scale) })
     const canvasFactory = new CanvasFactory()
     const drawingContext = canvasFactory.create(viewport.width, viewport.height)
@@ -164,10 +159,10 @@ export async function renderPageAsImage(
         return canvas.toDataURL()
       }
 
-      // Encode PNG bytes directly instead of round-tripping through a data URL
+      // Encode PNG bytes directly instead of round-tripping through a data URL.
       if ('encode' in canvas) {
         const buffer = await canvas.encode('png')
-        // `Buffer` pools its underlying `ArrayBuffer`, so slice out this view
+        // `Buffer` pools its underlying `ArrayBuffer`, so slice out this view.
         return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
       }
 

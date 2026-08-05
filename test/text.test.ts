@@ -13,7 +13,7 @@ describe('text', () => {
   it('preserves line breaks and normalizes whitespace when merging pages', async () => {
     const { text } = await extractText(await getPDF('links.pdf'), { mergePages: true })
 
-    // Guard against blind snapshot updates re-collapsing everything to one line
+    // Guard against blind snapshot updates re-collapsing everything to one line.
     expect(text).toContain('\n')
     expect(text).toMatchSnapshot()
   })

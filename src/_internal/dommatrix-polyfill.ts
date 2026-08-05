@@ -2,7 +2,7 @@ export function polyfillDOMMatrix() {
   if (typeof globalThis.DOMMatrix !== 'undefined')
     return
 
-  // @ts-expect-error: Minimal polyfill, not spec-complete
+  // @ts-expect-error: Minimal polyfill, not spec-complete.
   globalThis.DOMMatrix = class DOMMatrix {
     a: number
     b: number

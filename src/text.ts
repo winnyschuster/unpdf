@@ -14,7 +14,7 @@ export interface StructuredTextItem {
   height: number
   /** Font size derived from the transformation matrix. */
   fontSize: number
-  /** Font family name. */
+  /** Font family resolved from the page's style table, empty when unknown. */
   fontFamily: string
   /** Text direction: `"ltr"`, `"rtl"`, or `"ttb"`. */
   dir: string
