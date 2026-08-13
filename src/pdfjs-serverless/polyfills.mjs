@@ -37,7 +37,7 @@ if (typeof Map.prototype.getOrInsertComputed === 'undefined') {
 }
 
 // `Uint8Array.prototype.toHex` is used by PDF.js v5.6+ for document fingerprints.
-// Not yet available in all runtimes (e.g. Node.js < 26, Cloudflare Workers).
+// Not yet available in Node.js < 26.
 if (typeof Uint8Array.prototype.toHex === 'undefined') {
   // eslint-disable-next-line no-extend-native
   Object.defineProperty(Uint8Array.prototype, 'toHex', {
@@ -54,7 +54,7 @@ if (typeof Uint8Array.prototype.toHex === 'undefined') {
 }
 
 // `Math.sumPrecise` is used by PDF.js v6.1+ to repair embedded fonts, lay out
-// XFA forms and derive AES-256 keys. Not yet available in most runtimes.
+// XFA forms and derive AES-256 keys. Not yet available in Node.js.
 // Every call site sums a short list of byte lengths, glyph sizes or small
 // floats, where the last-ulp difference to correctly rounded summation cannot
 // change the result – so this deliberately skips the algorithm the
