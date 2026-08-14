@@ -1,21 +1,23 @@
 import { defineConfig } from 'rolldown'
-import { patchPDFJSSource, pdfjsTypes } from './src/pdfjs-serverless/rolldown/plugins'
+import { assertRuntimePatchesFirst, patchPDFJSSource, pdfjsTypes } from './src/pdfjs-serverless/rolldown/plugins'
 
 export default defineConfig({
   input: 'src/pdfjs-serverless/index.mjs',
-  // The root `"sideEffects": false` would tree-shake the polyfill/mock modules
-  // away – their only job is to mutate globals.
+  // The root `"sideEffects": false` applies to the sources read here too, which
+  // would drop the mock and polyfill modules whose only job is to mutate
+  // globals. Only an explicit rule outranks the manifest – a blanket
+  // `moduleSideEffects: true` does not.
   treeshake: {
     moduleSideEffects: [
-      { test: /pdfjs-serverless[\\/](mocks|polyfills)\.mjs$/, sideEffects: true },
+      { test: /[\\/]src[\\/]pdfjs-serverless[\\/]/, sideEffects: true },
     ],
   },
   output: {
     file: 'dist/pdfjs.mjs',
     format: 'esm',
     exports: 'auto',
-    // The worker is pulled in via a static import and inlined through the
-    // `__pdfjsWorker__` anchor, so everything must land in a single chunk.
+    // The worker is pulled in via a static import and has to end up in the same
+    // file as PDF.js itself, so everything must land in a single chunk.
     codeSplitting: false,
     sourcemap: false,
     // PDF.js relies on `Function.prototype.name`/class names at runtime – the
@@ -35,6 +37,7 @@ export default defineConfig({
   },
   plugins: [
     patchPDFJSSource(),
+    assertRuntimePatchesFirst(),
     pdfjsTypes(),
   ],
 })
